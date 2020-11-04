@@ -13,3 +13,27 @@ You can create a macro for any combination of the following keys;
 The naming convention requires you to put the modifier keys in order starting from ctrl, then shift and finishing with alt. Joining each key with a "**+**" and adding the function key name at the end.
 
 If you wanted to create a macro for `CTRL`+`ALT`+`SHIFT`+`F1` then the name should be `"ctrl+shift+alt+f1"`.
+
+```lua
+function OnEvent(event, arg)
+	if event == "G_PRESSED" then
+		modifiers = {"ctrl", "shift", "alt"};
+		pressed = "";
+		
+		for i = 1, 3 do
+			if IsModifierPressed(modifiers[i]) then
+				if pressed == "" then
+					pressed = pressed .. modifiers[i];
+				else
+					pressed = pressed .. "+" .. modifiers[i];
+				end
+			end
+		end
+		if pressed ~= "" then
+			macroKey = pressed .. "+f" .. arg;
+			OutputLogMessage("Macro Key Pressed " .. macroKey .. "\n");
+			PlayMacro(macroKey);
+		end
+	end
+end
+```
